@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rice Hisab</title>
+<style>
+body{font-family:Arial;background:#f1f5f1;padding:18px;color:#17251b}
+.box{background:white;padding:22px;border-radius:18px}
+h2{color:#14532d}
+input,select{width:100%;padding:14px;margin:8px 0;font-size:19px;box-sizing:border-box}
+.result{background:#e8f4e9;padding:18px;margin-top:20px;border-radius:14px}
+.answer{font-size:27px;font-weight:bold;color:#14532d}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🌾 Rice Hisab Calculator</h2>
+<p>Wazan (Mann.Kilo)</p>
+<input id="w" value="305.00" inputmode="decimal">
+<p>Har Mann par Cut</p>
+<select id="c">
+<option value="1">1 Kilo</option>
+<option value="2">2 Kilo</option>
+<option value="3">3 Kilo</option>
+<option value="4">4 Kilo</option>
+<option value="0">No Cut</option>
+</select>
+<div class="result">
+<p>Final Wazan</p>
+<div class="answer" id="a"></div>
+<p id="t"></p>
+</div>
+</div>
+<script>
+function calc(){
+let m=document.getElementById('w').value.trim().match(/^(\d+)(?:\.(\d{1,2}))?$/);
+if(!m){document.getElementById('a').innerText='Wazan check karein';return;}
+let mann=Number(m[1]);
+let kilo=Number((m[2]||'0').padEnd(2,'0'));
+if(kilo>=40){document.getElementById('a').innerText='Kilo 40 se kam rakhein';return;}
+let total=mann*40+kilo;
+let cut=mann*Number(document.getElementById('c').value);
+let remain=total-cut;
+let rm=Math.floor(remain/40);
+let rk=remain%40;
+document.getElementById('a').innerText=rm+' Mann '+rk+' Kilo';
+document.getElementById('t').innerText='Total Cut: '+cut+' Kilo | Baqi: '+remain+' Kilo';
+}
+document.getElementById('w').addEventListener('input',calc);
+document.getElementById('c').addEventListener('change',calc);
+calc();
+</script>
+</body>
+</html>
