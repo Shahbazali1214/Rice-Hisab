@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ur">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#14532d"><title>Rice Hisab</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1f5f1;color:#18251b;font-family:Arial,sans-serif}
+main{max-width:480px;margin:auto;padding:18px}.card{background:white;border-radius:20px;padding:22px;box-shadow:0 5px 22px #16391c12}
+h1{margin:0 0 5px;color:#14532d;font-size:26px}.muted{color:#68766b;font-size:14px}
+label{display:block;font-weight:bold;margin:18px 0 7px}
+input,select{width:100%;padding:15px;border:1px solid #cbd5cc;border-radius:12px;font-size:20px;background:#fff}
+.hint{font-size:12px;color:#68766b;margin-top:6px}
+.result{margin-top:22px;padding:18px;background:#e8f4e9;border-radius:16px}
+.answer{font-size:29px;font-weight:bold;color:#14532d;margin:8px 0}
+.line{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid #d3e4d5}
+button{width:100%;padding:14px;margin-top:16px;border:0;border-radius:12px;background:#14532d;color:white;font-size:17px;font-weight:bold}
+footer{text-align:center;color:#758078;font-size:12px;padding:16px}
+</style></head>
+<body><main><section class="card">
+<h1>🌾 Rice Hisab</h1><p class="muted">Mann aur kilo ka asaan calculator</p>
+<label>Wazan (Mann.Kilo)</label><input id="weight" inputmode="decimal" value="305.00" placeholder="Misal: 137.15">
+<div class="hint">137.15 = 137 Mann aur 15 Kilo. 1 Mann = 40 Kilo.</div>
+<label>Har Mann par cut</label><select id="cut"><option value="1">1 Kilo</option><option value="2">2 Kilo</option><option value="3">3 Kilo</option><option value="4">4 Kilo</option><option value="0">Cut nahi</option></select>
+<div class="result"><div class="muted">Cut ke baad final wazan</div><div class="answer" id="answer">297 Mann 15 Kilo</div>
+<div class="line"><span>Asal wazan</span><b id="gross">12,200 Kilo</b></div>
+<div class="line"><span>Total cut</span><b id="deduct">305 Kilo</b></div>
+<div class="line"><span>Baqi wazan</span><b id="net">11,895 Kilo</b></div></div>
+<button onclick="resetForm()">Reset</button>
+</section><footer>Rice Hisab Calculator · 40 Kilo = 1 Mann</footer></main>
+<script>
+const w=document.getElementById('weight'),c=document.getElementById('cut');
+const fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:2});
+function calc(){let m=w.value.trim().match(/^(\\d+)(?:\\.(\\d{1,2}))?$/);
+if(!m){document.getElementById('answer').textContent='Wazan durust likhein';return;}
+let mann=+m[1],kilo=+((m[2]||'0').padEnd(2,'0'));
+if(kilo>=40){document.getElementById('answer').textContent='Kilo 0 se 39 tak likhein';return;}
+let gross=mann*40+kilo,cut=mann*(+c.value),net=Math.max(0,gross-cut);
+let om=Math.floor(net/40),ok=net%40;
+document.getElementById('answer').textContent=om+' Mann '+ok+' Kilo';
+document.getElementById('gross').textContent=fmt(gross)+' Kilo';
+document.getElementById('deduct').textContent=fmt(cut)+' Kilo';
+document.getElementById('net').textContent=fmt(net)+' Kilo';}
+function resetForm(){w.value='305.00';c.value='1';calc();}
+w.addEventListener('input',calc);c.addEventListener('change',calc);calc();
+</script></body></html>
